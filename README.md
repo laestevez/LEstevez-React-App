@@ -1,3 +1,3 @@
 # LEstevez-React-App
 
-# This is my react app for csc 307
+This is my react app for csc 307
