@@ -14,18 +14,35 @@ function MyApp() {
   }, []);
 
   function removeOneCharacter(index) {
+    makeDeleteCall(characters.at(index).id);
+
     const updated = characters.filter((character, i) => {
       return i !== index
     });
+
     setCharacters(updated);
   }
 
-  function updateList(person) { 
-    makePostCall(person).then( result => {
-    if (result && result.status === 200)
-       setCharacters([...characters, person] );
+  async function makeDeleteCall(id) {
+    try {
+      const response = await axios.delete('http://localhost:5000/users/' + id);
+      if (response === 204)
+        return response.data.users_list;
+      else
+        return false;
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  function updateList(person) {
+    makePostCall(person).then(result => {
+      if (result && result.status === 201)
+        setCharacters([...characters, result.data]);
     });
- }
+  }
 
   async function fetchAll() {
     try {
@@ -39,25 +56,25 @@ function MyApp() {
     }
   }
 
-  async function makePostCall(person){
+  async function makePostCall(person) {
     try {
-       const response = await axios.post('http://localhost:5000/users', person);
-       return response;
+      const response = await axios.post('http://localhost:5000/users', person);
+      return response;
     }
     catch (error) {
-       console.log(error);
-       return false;
+      console.log(error);
+      return false;
     }
- }
-
-
-    return (
-      <div className="container">
-        <Table characterData={characters} removeCharacter={removeOneCharacter} />
-        <Form handleSubmit={updateList} />
-      </div>
-    )
-
   }
 
-  export default MyApp;
+
+  return (
+    <div className="container">
+      <Table characterData={characters} removeCharacter={removeOneCharacter} />
+      <Form handleSubmit={updateList} />
+    </div>
+  )
+
+}
+
+export default MyApp;
