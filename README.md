@@ -1,3 +1,4 @@
 # LEstevez-React-App
 
-This is my react app for csc 307
+csc307 linking my backend and frontend
+
