@@ -14,22 +14,19 @@ function MyApp() {
   }, []);
 
   function removeOneCharacter(index) {
-    makeDeleteCall(characters.at(index).id);
-
     const updated = characters.filter((character, i) => {
       return i !== index
     });
-
-    setCharacters(updated);
+    makeDeleteCall(characters.at(index).id).then(result => {
+      if (result && result.status === 204)
+        setCharacters(updated);
+    });
   }
 
   async function makeDeleteCall(id) {
     try {
       const response = await axios.delete('http://localhost:5000/users/' + id);
-      if (response === 204)
-        return response.data.users_list;
-      else
-        return false;
+      return response
     }
     catch (error) {
       console.log(error);
