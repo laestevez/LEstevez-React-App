@@ -17,7 +17,7 @@ function MyApp() {
     const updated = characters.filter((character, i) => {
       return i !== index
     });
-    makeDeleteCall(characters.at(index).id).then(result => {
+    makeDeleteCall(characters.at(index)._id).then(result => {
       if (result && result.status === 204)
         setCharacters(updated);
     });
